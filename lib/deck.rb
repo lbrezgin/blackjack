@@ -1,5 +1,5 @@
 class Deck 
-  attr_reader :deck
+  attr_reader :deck_arr, :cards
   
   def initialize
     @cards = {
@@ -19,16 +19,18 @@ class Deck
     }
   
     @suits = ["+", "<3", "^", "<>"]
-    @deck = []
+    @deck_arr = []
+    make_a_deck
   end
+
+  private
 
   def make_a_deck
     @cards.each_key do |key|
       @suits.each do |suit|
-        @deck.push("#{key}#{suit}")
+        @deck_arr.push("#{key}#{suit}")
       end
     end
-    @deck
+    @deck_arr
   end
 end
-
