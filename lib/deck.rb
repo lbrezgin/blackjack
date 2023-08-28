@@ -20,17 +20,16 @@ class Deck
   
     @suits = ["+", "<3", "^", "<>"]
     @deck_arr = []
-    make_a_deck
+  end
+
+  def pop_card
+    shuffle_deck if deck_arr.empty?
+    deck_arr.pop
   end
 
   private
 
-  def make_a_deck
-    @cards.each_key do |key|
-      @suits.each do |suit|
-        @deck_arr.push("#{key}#{suit}")
-      end
-    end
-    @deck_arr
+  def shuffle_deck
+    @deck_arr = @cards.keys.flat_map { |key| @suits.map { |suit| "#{key}#{suit}" } }.shuffle
   end
 end
