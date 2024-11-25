@@ -3,9 +3,9 @@ require_relative 'lib/deck.rb'
 
 class Main 
   ACTIONS = [
-    { id: '1', title: 'Пропустить ход', action: :skip },
-    { id: '2', title: 'Добавить карту', action: :add_card },
-    { id: '3', title: 'Открыть карты', action: :show_cards }
+    { id: '1', title: 'Skip a turn', action: :skip },
+    { id: '2', title: 'Add a card', action: :add_card },
+    { id: '3', title: 'Open all cards', action: :show_cards }
   ]
 
   attr_reader :deck, :user, :dealer, :name
@@ -24,10 +24,10 @@ class Main
     loop do 
       game
       if user_bank == 0
-        puts "У вас кончились деньги!"
+        puts "You've run out of money!"
         break
       elsif dealer_bank == 0
-        puts "У диллера закончились деньги!"
+        puts "The dealer ran out of money!"
         break
       end
     end
@@ -35,9 +35,9 @@ class Main
   
   def game 
     get_players_ready
-    puts "Делаем ставки!"
-    puts "У вас в банке осталось #{user_bank} $"
-    puts "У дилера в банке осталось #{dealer_bank} $"
+    puts "Place bets!"
+    puts "In your bank are #{user_bank} $"
+    puts "In dealers bank are #{dealer_bank} $"
     loop do
       show_status
       show_actions 
@@ -46,9 +46,9 @@ class Main
       
       if (dealer.score < 17) && (dealer.cards.size < 3)
         dealer.take_card
-        puts "Дилер взял карту!" 
+        puts "Dealer take a card!"
       elsif dealer.score >= 17 
-        puts "Дилер пропустил ход!"
+        puts "Dealer skip a turn!"
         @dealer_skipped = true
       end
 
@@ -74,8 +74,8 @@ class Main
   end
 
   def show_status 
-    puts "У вас #{user.cards} - это #{user.score} очков!"
-    puts "У дилера: " 
+    puts "You have #{user.cards} - it is #{user.score} points!"
+    puts "Dealer have: "
     dealer.cards.each { |card| puts " * " }
   end
 
@@ -92,60 +92,60 @@ class Main
     if hash_of_action
       hash_of_action[:action]
     else
-      puts 'Действие не найдено'
+      puts 'Action do not find'
     end
   end
 
   def skip 
-    puts "Ход пропущен!"
+    puts "Turn was skipped!"
     @player_skipped = true
   end
 
   def add_card 
     if user.take_card 
-      puts "Вы взяли карту #{user.cards.last}"
+      puts "You take a card #{user.cards.last}"
     else
-      puts "Вы не можете брать больше 3 карт!"
+      puts "You can not take more than 3 cards!"
     end
   end
 
   def show_cards 
-    puts "Вы набрали #{user.score}, у дилера #{dealer.score}"
+    puts "Your score is #{user.score}, dealers score is #{dealer.score}"
     if (user.score == dealer.score) || (user.score > 21 && dealer.score > 21)
-      puts "У вас ничья!"
+      puts "Draw!"
       self.user_bank += 10
       self.dealer_bank += 10
     elsif (user.score > 21) && (dealer.score <= 21)
-      puts "Диллер выиграл!"
+      puts "Dealer win!"
       self.dealer_bank += 20
     elsif (user.score <= 21) && (dealer.score > 21)
-      puts "Вы победили!"
+      puts "You win!"
       self.user_bank += 20
     elsif (user.score <= 21) && (dealer.score <= 21)
       if (21 - user.score) < (21 - dealer.score)
-        puts "Вы победили!"
+        puts "You win!"
         self.user_bank += 20
       else
-        puts "Диллер выиграл!"
+        puts "Dealer win!"
         self.dealer_bank += 20
       end
     end
-    puts "У дилера были #{dealer.cards}"
+    puts "Dealer had #{dealer.cards}"
     puts "---------------------------"
   end
 
   def show_actions 
-    puts "Вы можете: " 
-    puts "Пропустить ход - 1" 
-    puts "Добавить карту - 2" if user.cards.size < 3
-    puts "Открыть все карты - 3" 
+    puts "You can: "
+    puts "Skip a turn - 1"
+    puts "Add a card - 2" if user.cards.size < 3
+    puts "Open all cards - 3"
   end
 
   def greetings
-    puts "Добро пожаловать!"
-    print "Представьтесь пожалуйста: "
+    puts "Welcome!"
+    print "Please, introduce yourself: "
     @name = gets.chomp
-    puts "Здравствуйте #{name}, ну что же, давайте начнем!"
+    puts "Hi #{name}, so, lets start!"
   end
 
   def welcome_inscription
@@ -160,7 +160,3 @@ class Main
 end
 
 Main.new.start
-
-
-
-
